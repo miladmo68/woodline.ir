@@ -192,6 +192,12 @@ h1, h2, h3, h4, h5, h6,
 @media (min-width: 992px) {
     .nav-float-wrap {
         padding: 0;
+        transition: padding 0.5s var(--transition-smooth);
+        will-change: top;
+    }
+
+    .nav-float-wrap.is-docked {
+        top: 0 !important;
     }
 
     .nav-glass-panel {
@@ -213,10 +219,6 @@ h1, h2, h3, h4, h5, h6,
         max-width: 100%;
         margin: 0;
         border-radius: 0;
-    }
-
-    .nav-float-wrap.is-scrolled {
-        top: 0 !important;
     }
 
     .nav-float-wrap.is-scrolled .nav-glass-panel {

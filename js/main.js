@@ -24,17 +24,45 @@
         return window.innerWidth < DESKTOP_BP;
     }
 
+    function getTopbarHeight() {
+        return topbar ? topbar.offsetHeight : 0;
+    }
+
+    function setNavTopOffset(scrollTop) {
+        var topbarH = getTopbarHeight();
+
+        if (!isMobileNav()) {
+            var offset = Math.max(0, topbarH - scrollTop);
+            document.documentElement.style.setProperty('--nav-top-offset', offset + 'px');
+            return;
+        }
+
+        if (scrollTop > 30) {
+            if (scrollTop > CAPSULE_THRESHOLD) {
+                document.documentElement.style.setProperty('--nav-top-offset', DOCK_TOP + 'px');
+            } else {
+                document.documentElement.style.setProperty('--nav-top-offset', topbarH + 'px');
+            }
+            return;
+        }
+
+        document.documentElement.style.setProperty('--nav-top-offset', topbarH + 'px');
+    }
+
     function syncNavOffset() {
-        var h = topbar ? topbar.offsetHeight : 0;
-        document.documentElement.style.setProperty('--nav-top-offset', h + 'px');
+        setNavTopOffset(window.scrollY || window.pageYOffset);
     }
 
     function updateNavOnScroll() {
         var scrollTop = window.scrollY || window.pageYOffset;
         var passedThreshold = scrollTop > CAPSULE_THRESHOLD;
+        var topbarH = getTopbarHeight();
+        var docked = !isMobileNav() && scrollTop >= topbarH;
 
         if (navWrap) {
-            navWrap.classList.toggle('is-scrolled', scrollTop > 30);
+            var scrolled = isMobileNav() ? scrollTop > 30 : scrollTop > 0;
+            navWrap.classList.toggle('is-scrolled', scrolled);
+            navWrap.classList.toggle('is-docked', docked);
             if (isMobileNav()) {
                 navWrap.classList.toggle('is-capsule', passedThreshold);
             } else {
@@ -42,19 +70,7 @@
             }
         }
 
-        if (scrollTop > 30) {
-            if (isMobileNav()) {
-                if (passedThreshold) {
-                    document.documentElement.style.setProperty('--nav-top-offset', DOCK_TOP + 'px');
-                } else {
-                    syncNavOffset();
-                }
-            } else {
-                document.documentElement.style.setProperty('--nav-top-offset', '0px');
-            }
-        } else {
-            syncNavOffset();
-        }
+        setNavTopOffset(scrollTop);
 
         var docH = $(document).height() - $(window).height();
         var pct = docH > 0 ? Math.min(100, (scrollTop / docH) * 100) : 0;
@@ -95,23 +111,20 @@
     function getScrollOffset() {
         var navH = navWrap ? navWrap.offsetHeight : 70;
         var scrollTop = window.scrollY || window.pageYOffset;
-        var topbarH = topbar ? topbar.offsetHeight : 0;
+        var topbarH = getTopbarHeight();
 
-        if (scrollTop > 30) {
-            if (isMobileNav() && scrollTop <= CAPSULE_THRESHOLD) {
-                return navH + topbarH + 12;
-            }
-            if (isMobileNav()) {
+        if (isMobileNav()) {
+            if (scrollTop > 30) {
+                if (scrollTop <= CAPSULE_THRESHOLD) {
+                    return navH + topbarH + 12;
+                }
                 return navH + DOCK_TOP + 8;
             }
-            return navH + 8;
+            return navH + topbarH + 12;
         }
 
-        if (!isMobileNav()) {
-            return navH + topbarH;
-        }
-
-        return navH + topbarH + 12;
+        var topbarRemain = Math.max(0, topbarH - scrollTop);
+        return navH + topbarRemain + 8;
     }
 
     function closeMobileNav() {
