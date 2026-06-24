@@ -1,0 +1,63 @@
+# Dependencies
+node_modules/
+
+# Environment & secrets (keep .env.example in repo)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime / process
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Optional npm cache
+.npm
+.eslintcache
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Build output (if added later)
+dist/
+build/
+.cache/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Local deployment / hosting
+.vercel/
+.netlify/
