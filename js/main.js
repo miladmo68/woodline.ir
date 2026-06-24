@@ -215,8 +215,11 @@
     document.querySelectorAll('.portfolio-item').forEach(function (item) {
         item.addEventListener('click', function () {
             var src = this.getAttribute('data-src');
+            var imgEl = this.querySelector('img');
+            var altText = imgEl ? imgEl.getAttribute('alt') : '';
             if (lightbox && lightboxImg && src) {
                 lightboxImg.src = src;
+                if (altText) lightboxImg.alt = altText;
                 lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
