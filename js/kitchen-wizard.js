@@ -151,9 +151,6 @@
         radio.addEventListener('change', syncHiddenFields);
     });
 
-    btnSubmit.addEventListener('click', function (e) {
-        e.preventDefault();
-    });
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
