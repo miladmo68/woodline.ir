@@ -3,7 +3,7 @@
 const nodemailer = require('nodemailer');
 const validator = require('validator');
 
-const MAIL_TO = process.env.MAIL_TO || process.env.TO_EMAIL || 'tarahanchoob@gmail.com';
+const MAIL_TO = process.env.MAIL_TO || process.env.TO_EMAIL || 'tarahanchoob@gmail.com, arashmh55@gmail.com';
 const MAIL_FROM = process.env.MAIL_FROM || process.env.SMTP_USER || 'no-reply@tarahanchoob.com';
 
 let transporter = null;
